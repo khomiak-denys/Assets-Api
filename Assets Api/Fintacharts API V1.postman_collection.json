@@ -1,0 +1,357 @@
+{
+	"info": {
+		"_postman_id": "96d487f8-cee4-4bba-9d83-9dce8612a104",
+		"name": "Fintacharts API V1",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29013857"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "get token",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"TOKEN\", jsonData.access_token);",
+									"pm.environment.set(\"REFRESH_TOKEN\", jsonData.refresh_token);",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "password",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "app-cli",
+									"type": "text"
+								},
+								{
+									"key": "username",
+									"value": "{{USERNAME}}",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "{{PASSWORD}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{URI}}/identity/realms/:realm/protocol/openid-connect/token",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"identity",
+								"realms",
+								":realm",
+								"protocol",
+								"openid-connect",
+								"token"
+							],
+							"variable": [
+								{
+									"key": "realm",
+									"value": "fintatech"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "instruments",
+			"item": [
+				{
+					"name": "list instruments",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/instruments/v1/instruments?provider=oanda&kind=forex",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"instruments",
+								"v1",
+								"instruments"
+							],
+							"query": [
+								{
+									"key": "provider",
+									"value": "oanda"
+								},
+								{
+									"key": "kind",
+									"value": "forex"
+								},
+								{
+									"key": "symbol",
+									"value": "EUR/USD",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "10",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list providers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/instruments/v1/providers",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"instruments",
+								"v1",
+								"providers"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "list exchanges",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/instruments/v1/exchanges",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"instruments",
+								"v1",
+								"exchanges"
+							],
+							"query": [
+								{
+									"key": "provider",
+									"value": "oanda",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "bars",
+			"item": [
+				{
+					"name": "count back",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/bars/v1/bars/count-back?instrumentId=c0ea1432-2b7a-40c8-a015-074dbb94d7b6&provider=oanda&interval=1&periodicity=minute&barsCount=10",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"v1",
+								"bars",
+								"count-back"
+							],
+							"query": [
+								{
+									"key": "instrumentId",
+									"value": "c0ea1432-2b7a-40c8-a015-074dbb94d7b6"
+								},
+								{
+									"key": "provider",
+									"value": "oanda"
+								},
+								{
+									"key": "interval",
+									"value": "1"
+								},
+								{
+									"key": "periodicity",
+									"value": "minute"
+								},
+								{
+									"key": "barsCount",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "date range",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/bars/v1/bars/date-range?instrumentId=c0ea1432-2b7a-40c8-a015-074dbb94d7b6&provider=oanda&interval=1&periodicity=minute&startDate=2023-08-07",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"bars",
+								"v1",
+								"bars",
+								"date-range"
+							],
+							"query": [
+								{
+									"key": "instrumentId",
+									"value": "c0ea1432-2b7a-40c8-a015-074dbb94d7b6"
+								},
+								{
+									"key": "provider",
+									"value": "oanda"
+								},
+								{
+									"key": "interval",
+									"value": "1"
+								},
+								{
+									"key": "periodicity",
+									"value": "minute"
+								},
+								{
+									"key": "startDate",
+									"value": "2023-08-07"
+								},
+								{
+									"key": "endDate",
+									"value": "2023-08-08",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "time back",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{URI}}/api/data-consolidators/bars/v1/bars/time-back?instrumentId=c0ea1432-2b7a-40c8-a015-074dbb94d7b6&provider=oanda&interval=1&periodicity=minute&timeBack=1.00:00:00",
+							"host": [
+								"{{URI}}"
+							],
+							"path": [
+								"api",
+								"data-consolidators",
+								"bars",
+								"v1",
+								"bars",
+								"time-back"
+							],
+							"query": [
+								{
+									"key": "instrumentId",
+									"value": "c0ea1432-2b7a-40c8-a015-074dbb94d7b6"
+								},
+								{
+									"key": "provider",
+									"value": "oanda"
+								},
+								{
+									"key": "interval",
+									"value": "1"
+								},
+								{
+									"key": "periodicity",
+									"value": "minute"
+								},
+								{
+									"key": "timeBack",
+									"value": "1.00:00:00"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{TOKEN}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

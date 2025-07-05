@@ -1,0 +1,40 @@
+# Visual Studio Solution User Options
+# Ця папка містить тимчасові, локальні для користувача файли та кеш Visual Studio.
+# Вона може бути великою і не повинна відстежуватися в системі контролю версій.
+.vs/
+
+appsettings.json
+
+
+
+
+
+
+# Binaries
+[Bb]in/
+[Oo]bj/
+
+
+*.exe
+*.dll
+*.pdb
+*.tmp
+*.user
+*.suo
+*.cache
+*.vspscc
+*.vssscc
+*.bak
+*.log
+*.ncb
+*.opendb
+*.opensdf
+*.docstates
+*.sqlite
+*.VC.UpgradeFromVC70.log
+*.webinfo
+*.builds
+*.DS_Store
+
+*.nupkg
+.nuget/NuGetScratch/
