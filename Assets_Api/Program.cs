@@ -21,6 +21,7 @@ namespace Assets_Api
             builder.Services.AddHttpClient<FintachartsAuthService>();
             builder.Services.AddHttpClient<AssetsService>();
             builder.Services.AddHttpClient<PriceInfoService>();
+            builder.Services.AddScoped<PricesStreamingService>();
             builder.Services.AddScoped<AssetsRepository>();
             builder.Services.AddScoped<PriceInfoRepository>();
 

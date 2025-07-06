@@ -32,7 +32,7 @@ namespace Assets_Api.Services
 
             foreach (string symbol in symbols)
             {
-                Console.WriteLine(symbol);
+               
              
                 var asset = await _assetsRepository.GetAssetBySymbolAsync(symbol);
                 
