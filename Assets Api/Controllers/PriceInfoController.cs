@@ -21,9 +21,13 @@ namespace Assets_Api.Controllers
         }
 
         [HttpGet(Name = "GetPrices")]
-        public async Task<IActionResult> Get([FromQuery] string symbol) {
+        public async Task<IActionResult> Get([FromQuery(Name = "symbols")] List<string> symbols) {
             _logger.LogInformation("Fetching prices");
-            var prices = await _priceInfoService.GetPricesAsync(symbol);
+            foreach (var symbol in symbols)
+            {
+                _logger.LogInformation($"Fetching price for symbol: {symbol}");
+            }
+            var prices = await _priceInfoService.GetPricesAsync(symbols);
             return Ok(prices);
         }
     }

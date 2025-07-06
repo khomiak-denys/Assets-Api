@@ -22,37 +22,45 @@ namespace Assets_Api.Services
             _config = config;
         }
 
-        public async Task<IEnumerable<PriceInfo>> GetPricesAsync(string symbol)
+        public async Task<IEnumerable<IEnumerable<PriceInfo>>> GetPricesAsync(List<string> symbols)
         {
-            var result = await _assetsRepository.GetAssetBySymbolAsync(symbol);
-
-            var instrumentId = result.id;
-            var provider = result.provider;
+            
+            List<List<PriceInfo>> prices = new List<List<PriceInfo>>();
 
             var accessToken = await _authService.GetAccessTokenAsync();
             _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
 
-            var url = $"{_config["PriceInfoService:BaseUrl"]}?instrumentId={instrumentId}&provider={provider}&interval={_config["PriceInfoService:Interval"]}&periodicity={_config["PriceInfoService:Periodicity"]}&barsCount={_config["PriceInfoService:BarsCount"]}";
-            var response = await _httpClient.GetAsync(url);
-            response.EnsureSuccessStatusCode();
-            var content = await response.Content.ReadAsStringAsync();
-
-            var jsonData = JsonSerializer.Deserialize<JsonElement>(content);
-            var dataArray = jsonData.GetProperty("data").EnumerateArray();
-
-            List<PriceInfo> prices = new List<PriceInfo>();
-
-            foreach(var element in dataArray)
+            foreach (string symbol in symbols)
             {
-                prices.Add(new PriceInfo
-                {
-                    symbol = symbol,
-                    price = element.GetProperty("c").GetDecimal(),
-                    lastupdate = DateTimeOffset.Parse(element.GetProperty("t").GetString()).UtcDateTime
-                });
-            }
-            await _priceInfoRepository.AddRange(prices);
+                Console.WriteLine(symbol);
+             
+                var asset = await _assetsRepository.GetAssetBySymbolAsync(symbol);
+                
+                var instrumentId = asset.id;
+                var provider = asset.provider;
 
+                var url = $"{_config["PriceInfoService:BaseUrl"]}?instrumentId={instrumentId}&provider={provider}&interval={_config["PriceInfoService:Interval"]}&periodicity={_config["PriceInfoService:Periodicity"]}&barsCount={_config["PriceInfoService:BarsCount"]}";
+                var response = await _httpClient.GetAsync(url);
+                response.EnsureSuccessStatusCode();
+                var content = await response.Content.ReadAsStringAsync();
+
+                var jsonData = JsonSerializer.Deserialize<JsonElement>(content);
+                var dataArray = jsonData.GetProperty("data").EnumerateArray();
+
+                List<PriceInfo> pricesForAsset = new List<PriceInfo>();
+
+                foreach (var element in dataArray)
+                {
+                    pricesForAsset.Add(new PriceInfo
+                    {
+                        symbol = symbol,
+                        price = element.GetProperty("c").GetDecimal(),
+                        lastupdate = DateTimeOffset.Parse(element.GetProperty("t").GetString()).UtcDateTime
+                    });
+                }
+                await _priceInfoRepository.AddRange(pricesForAsset);
+                prices.Add(pricesForAsset);
+            }
             return  prices;
         }
     }
