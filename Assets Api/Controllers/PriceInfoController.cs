@@ -1,4 +1,6 @@
-﻿using Assets_Api.Models;
+﻿using Assets_Api.Database.Repositiries;
+using Assets_Api.Models;
+using Assets_Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
@@ -9,23 +11,20 @@ namespace Assets_Api.Controllers
     [Route("[controller]")]
     public class PriceInfoController : ControllerBase {
         private readonly ILogger<PriceInfoController> _logger;
-        public PriceInfoController(ILogger<PriceInfoController> logger)
+        private readonly PriceInfoService _priceInfoService;
+        
+        public PriceInfoController(ILogger<PriceInfoController> logger, PriceInfoService priceInfoService)
         {
             _logger = logger;
+            _priceInfoService = priceInfoService;
+
         }
 
         [HttpGet(Name = "GetPrices")]
-        public IEnumerable<PriceInfo> Get() {
+        public async Task<IActionResult> Get([FromQuery] string symbol) {
             _logger.LogInformation("Fetching prices");
-            return Enumerable.Range(1, 5).Select(index => new PriceInfo
-            {
-                Id = index,
-                Symbol = $"Symbol{index}",
-                Price = (decimal)(Random.Shared.Next(100, 1000) + Random.Shared.NextDouble()),
-                LastUpdate = DateTime.Now.AddMinutes(0)
-            })
-            .ToArray();
+            var prices = await _priceInfoService.GetPricesAsync(symbol);
+            return Ok(prices);
         }
-
     }
 }

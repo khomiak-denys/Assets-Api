@@ -4,11 +4,9 @@ namespace Assets_Api.Models
 {
     public class Assets
     {
-        [JsonPropertyName("id")]
-        public string Id { get; set; }
-        [JsonPropertyName("symbol")]
-        public string Symbol { get; set; }
-        [JsonPropertyName("description")]
-        public string Name { get; set; }    
+        public string id { get; set; }
+        public string symbol { get; set; }
+        public string name { get; set; }
+        public string provider { get; set; }
     }
 }

@@ -1,5 +1,8 @@
-
+using Assets_Api.Database;
+using Assets_Api.Database.Repositiries;
 using Assets_Api.Services;
+using Microsoft.EntityFrameworkCore;
+
 
 namespace Assets_Api
 {
@@ -17,7 +20,15 @@ namespace Assets_Api
             builder.Services.AddSwaggerGen();
             builder.Services.AddHttpClient<FintachartsAuthService>();
             builder.Services.AddHttpClient<AssetsService>();
-            
+            builder.Services.AddHttpClient<PriceInfoService>();
+            builder.Services.AddScoped<AssetsRepository>();
+
+
+            builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetSection("DBConnection")["DefaultConnection"]));
+
+
+
 
             var app = builder.Build();
 
