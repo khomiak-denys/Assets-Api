@@ -5,7 +5,7 @@ using System.Diagnostics.SymbolStore;
 namespace Assets_Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class AssetsController : ControllerBase {
         private readonly ILogger<AssetsController> _logger;
         private readonly AssetsService _assetsService;

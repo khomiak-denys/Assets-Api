@@ -2,9 +2,9 @@
 {
     public class PriceInfo
     {
-        public int Id { get; set; }
-        public string Symbol { get; set; }
-        public decimal Price { get; set; }
-        public DateTime LastUpdate { get; set; }  
+        public long id { get; set; }
+        public string symbol { get; set; }
+        public decimal price { get; set; }
+        public DateTime lastupdate { get; set; }  
     }
 }

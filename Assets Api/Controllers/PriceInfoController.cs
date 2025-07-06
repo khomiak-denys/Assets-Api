@@ -8,7 +8,7 @@ using System;
 namespace Assets_Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class PriceInfoController : ControllerBase {
         private readonly ILogger<PriceInfoController> _logger;
         private readonly PriceInfoService _priceInfoService;

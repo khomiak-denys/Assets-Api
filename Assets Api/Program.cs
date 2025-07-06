@@ -22,13 +22,11 @@ namespace Assets_Api
             builder.Services.AddHttpClient<AssetsService>();
             builder.Services.AddHttpClient<PriceInfoService>();
             builder.Services.AddScoped<AssetsRepository>();
+            builder.Services.AddScoped<PriceInfoRepository>();
 
 
             builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(builder.Configuration.GetSection("DBConnection")["DefaultConnection"]));
-
-
-
 
             var app = builder.Build();
 
